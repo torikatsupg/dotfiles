@@ -1,0 +1,77 @@
+#
+# Executes commands at the start of an interactive session.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
+
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+# Customize to your needs...
+typeset -U path PATH
+path=(
+	/opt/homebrew/bin(N-/) # homebrew path
+	$HOME/.nodenv/bin(N-/) # nodenv path
+	$HOME/development/flutter/bin(N-/) # flutter path
+	/usr/local/bin(N-/)
+	$path
+)
+
+# nodenv setting
+eval "$(nodenv init -)"
+
+# apply pure zsh theme
+autoload -Uz promptinit
+prompt pure
+
+# no beep
+setopt no_beep
+setopt nolistbeep
+
+# history settings
+HISTFILE=$HOME/.zsh_history
+HISTSIZE=100000
+SAVEHIST=10000000
+setopt EXTENDED_HISTORY
+setopt hist_expand
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_reduce_blanks
+setopt hist_save_no_dups
+setopt hist_verify
+setopt inc_append_history
+setopt share_history 
+
+# peco setting
+function peco-history-selection() {
+    BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
+    CURSOR=$#BUFFER
+    zle reset-prompt
+}
+
+zle -N peco-history-selection
+bindkey '^R' peco-history-selection
+
+# cdr
+if [[ -n $(echo ${^fpath}/chpwd_recent_dirs(N)) && -n $(echo ${^fpath}/cdr(N)) ]]; then
+    autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+    add-zsh-hook chpwd chpwd_recent_dirs
+    zstyle ':completion:*' recent-dirs-insert both
+    zstyle ':chpwd:*' recent-dirs-default true
+    zstyle ':chpwd:*' recent-dirs-max 1000
+    zstyle ':chpwd:*' recent-dirs-file "$HOME/.cache/chpwd-recent-dirs"
+fi
+
+function peco-cdr () {
+  local selected_dir="$(cdr -l | sed 's/^[0-9]\+ \+//' | peco --prompt="cdr >" --query "$LBUFFER")"
+  if [ -n "$selected_dir" ]; then
+    BUFFER="cd `echo $selected_dir | awk '{print$2}'`"
+    CURSOR=$#BUFFER
+    zle reset-prompt
+  fi
+}
+zle -N peco-cdr
+bindkey '^G' peco-cdr

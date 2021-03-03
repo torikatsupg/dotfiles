@@ -1,0 +1,26 @@
+# Required:
+[[plugins]]
+repo='Shougo/dein.vim'
+
+# lsp client
+[[plugins]]
+repo='neoclide/coc.nvim'
+merge=0
+rev='release'
+hook_add="""
+source ~/dotfiles/vim/plugins/coc/coc.rc.vim
+"""
+
+# indent visible
+[[plugins]]
+repo='Yggdroot/indentLine'
+hook_add="""
+source ~/dotfiles/vim/plugins/indentLine/indentLine.rc.vim
+"""
+
+# theme
+[[plugins]]
+repo = 'cocopon/iceberg.vim'
+hook_add="""
+source ~/dotfiles/vim/plugins/iceberg/iceberg.rc.vim
+"""
