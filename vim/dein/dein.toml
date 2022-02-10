@@ -24,3 +24,8 @@ repo = 'cocopon/iceberg.vim'
 hook_add="""
 source ~/dotfiles/vim/plugins/iceberg/iceberg.rc.vim
 """
+
+# rust settings
+[[plugins]]
+repo = 'rust-lang/rust.vim'
+

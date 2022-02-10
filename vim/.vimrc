@@ -30,9 +30,28 @@ set showmatch
 set cindent
 set tabstop=2
 set expandtab
+set shiftwidth=2
 
 " search
 set hlsearch
 set incsearch
 set ignorecase
 set smartcase
+
+" matchit
+runtime macros/matchit.vim
+
+" TODO(torikatsu): sorround.vim
+" bundler.vim?
+" ファイルタイププラグインってワードで検索できそう
+" p322 tip102で^-]を紹介？
+"
+" 検索系
+" * # -> カーソル直下の単語を検索
+" * # -> カードル直下の文字のパターンを検索
+" set ws / nows 検索でファイルの先頭に戻るかどうかをトグルできる
+" C-l の役割について調べる、nohlsはC-lにマッピングするといいらしい?
+" textbj-lastpatを使うとgU//e, //<CR>, ., //<CR> を n, gU\iとできる
+"
+" ヴィジュアルで選択範囲を検索するスクリプトを追加したい,デフォでなかった
+set noswapfile
